@@ -9,7 +9,8 @@ body {
       color: white;
     }
     .navbar {
-      font: 1em sans-serif;ont-family: f1, sans-serif;
+      font: 1em sans-serif;
+      font-family: f1, sans-serif;
       display: flex;
       align-items: center;
       justify-content: space-between;
