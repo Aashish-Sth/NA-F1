@@ -3,6 +3,13 @@
     font-family: 'f1';
     src: url(fonts/Formula1-Regular-1.ttf);
 }
+
+@font-face {
+  font-family: 'f1-b';
+  src: url(./../fonts/Formula1-Regular-1.ttf);
+}
+
+
 body {
       margin: 0;
       
@@ -68,3 +75,14 @@ body {
       overflow: hidden;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
+
+
+    .f1
+{
+font-family: f1, sans-serif;
+}
+
+.f1-b
+{
+font-family: f1-b, sans-serif;
+}
