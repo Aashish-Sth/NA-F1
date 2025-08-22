@@ -126,9 +126,13 @@
         </div>
       </div>
     </nav>
-    <div class="video-section">
-      video
-    </div>
+
+    <section class="relative w-full h-screen overflow-hidden">
+      <video class="absolute top-0 left-0 w-full h-full object-cover" autoplay muted loop playsinline>
+        <source src="assets/index/landing vid.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </section>
 
     <div class="highlight-section">
       <h2 class="f1-b text-3xl font-bold">Latest Highlight</h2>
@@ -141,58 +145,85 @@
 
     <section class="grid grid-cols-2 gap-4">
         <div class="p-4 bg-gray-700 flex gap-4 rounded-lg ml-6">
-          <div class="overflow-hidden rounded-lg"><img src="assets/index/highlight 1.jpg" class="max-h-64 rounded-lg transition-transform duration-500 hover:scale-110 "></div>
+          <div class="overflow-hidden rounded-lg"><img src="assets/index/highlight 1.jpg" class="h-36 w-96 rounded-lg transition-transform duration-500 hover:scale-110 "></div>
           <div class="f1-b justify-end">
-            <h3 class="font-semibold">Verstappen's dramatic first title win as he edged out Hamilton</h3>
+            <h3 class="font-semibold">Verstappen's dramatic first title win as he edged out Hamilton</h3><br><br><br>
             <p class="text-sm text-gray-300">August 1st, 2025</p>
           </div>
         </div>
       
 
         <div class="p-4 bg-gray-700 flex gap-4 rounded-lg mr-6">
-          <div class="overflow-hidden rounded-lg"><img src="assets/index/highlight 2.jpg" class="max-h-64 rounded-lg transition-transform duration-500 hover:scale-110 "></div>
+          <div class="overflow-hidden rounded-lg"><img src="assets/index/highlight 2.jpg" class="h-36 w-80 rounded-lg transition-transform duration-500 hover:scale-110 "></div>
           <div class="f1-b justify-end">
-            <h3 class="font-semibold">Kick Sauber’s best and worst moments from 2025</h3>
-            <p class="text-sm text-gray-300">August 1st, 2025</p>
+            <h3 class="font-semibold">Kick Sauber’s best and worst moments from 2025</h3><br><br><br>
+            <p class="text-sm text-gray-300">August 9th, 2025</p>
           </div>
         </div>
 
         <div class="p-4 bg-gray-700 flex gap-4 rounded-lg ml-6">
-          <div class="overflow-hidden rounded-lg"><img src="assets/index/highlight 3.jpg" class="max-h-64 rounded-lg transition-transform duration-500 hover:scale-110 "></div>
+          <div class="overflow-hidden rounded-lg"><img src="assets/index/highlight 3.jpg" class="h-36 w-[305px] rounded-lg transition-transform duration-500 hover:scale-110 "></div>
           <div class="f1-b justify-end">
-            <h3 class="font-semibold">Stella surprised by level of McLaren's dominance</h3>
-            <p class="text-sm text-gray-300">August 1st, 2025</p>
+            <h3 class="font-semibold">Stella surprised by level of McLaren's dominance</h3><br><br><br>
+            <p class="text-sm text-gray-300">August 15th, 2025</p>
           </div>
         </div>
 
         <div class="p-4 bg-gray-700 flex gap-4 rounded-lg mr-6">
-          <div class="overflow-hidden rounded-lg"><img src="assets/index/highlight 4.jpg" class="max-h-64 rounded-lg transition-transform duration-500 hover:scale-110 "></div>
+          <div class="overflow-hidden rounded-lg"><img src="assets/index/highlight 4.jpg" class="h-36 w-96 rounded-lg transition-transform duration-500 hover:scale-110 "></div>
           <div class="f1-b justify-end">
-            <h3 class="font-semibold">Racing Bulls have finished eighth in the Teams’ Championship</h3>
-            <p class="text-sm text-gray-300">August 1st, 2025</p>
+            <h3 class="font-semibold">Racing Bulls have finished eighth in the Teams’ Championship</h3><br><br><br>
+            <p class="text-sm text-gray-300">August 22nd, 2025</p>
           </div>
         </div>
 
         <div class="p-4 bg-gray-700 flex gap-4 rounded-lg ml-6">
-          <div class="overflow-hidden rounded-lg"><img src="assets/index/highlight 5.jpg" class="max-h-64 rounded-lg transition-transform duration-500 hover:scale-110 "></div>
+          <div class="overflow-hidden rounded-lg"><img src="assets/index/highlight 5.jpg" class="h-36 w-[288px] rounded-lg transition-transform duration-500 hover:scale-110 "></div>
           <div class="f1-b justify-end">
-            <h3 class="font-semibold">Albon believes 2025 is his best season so far</h3>
-            <p class="text-sm text-gray-300">August 1st, 2025</p>
+            <h3 class="font-semibold">Albon believes 2025 is his best season so far</h3><br><br><br>
+            <p class="text-sm text-gray-300">August 22ndt, 2025</p>
           </div>
         </div>
 
         <div class="p-4 bg-gray-700 flex gap-4 rounded-lg mr-6">
-          <div class="overflow-hidden rounded-lg"><img src="assets/index/highlight 6.jpg" class="max-h-64 rounded-lg transition-transform duration-500 hover:scale-110 " ></div>
+          <div class="overflow-hidden rounded-lg"><img src="assets/index/highlight 6.jpg" class="h-36 w-[245px] rounded-lg transition-transform duration-500 hover:scale-110 " ></div>
           <div class="f1-b justify-end">
-            <h3 class="font-semibold">How long do their current deals last?</h3>
-            <p class="text-sm text-gray-300">August 1st, 2025</p>
+            <h3 class="font-semibold">How long do their current deals last?</h3><br><br><br><br>
+            <p class="text-sm text-gray-300">August 29th, 2025</p>
           </div>
         </div>
     </section>
 
+    <div class="flex p-4 gap-6 justify-center flex-wrap pt-6 mt-6">
+      <div class="bg-gray-200 rounded-lg flex items-center p-2 gap-2">
+        <a href="#" class="text-black px-2">F1 Drivers</a>
+      </div>
+      <div class="bg-gray-200 rounded-lg flex items-center p-2 gap-2">
+        <a href="#" class="text-black px-2">F1 Shop</a>
+
+      </div>
+      <div class="bg-gray-200 rounded-lg flex items-center p-2 gap-2">
+        <a href="#" class="text-black px-2">F1 News</a>
+      </div>
+      <div class="bg-gray-200 rounded-lg flex items-center p-2 gap-2">
+        <a href="#" class="text-black px-2">F1 Drivers</a>
+      </div>
+    </div>
+    
+    <section class="bg-gray-100 text-black p-8 mt-8 rounded-lg flex flex-col items-center gap-6 mx-6">
+      <div class="flex-1">
+        <h1 class="f1-b text-2xl">Welcome to World of</h1>
+        <h3 class="f1-b text-2xl">FORMULA 1</h3>
+        <p class="mt-4 text-gray-700 f1-b">
+          Formula 1 welcomes its fans with an invitation to experience the thrill of racing and the joy of shared moments, both at the track and beyond. The partnership with Barilla pasta exemplifies this by offering fans a chance to celebrate the moments that matter with a great meal. Formula 1 also emphasizes its commitment to excellence, authenticity, and creating extraordinary moments together.
+        </p>
+        <div class="f1-b pt-6">
+          <button class="bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300 p-3 rounded-lg">Discover More</button>
+        </div>
+      </div>
+    </section>
 
     
-
 
   </body>
 </html>
