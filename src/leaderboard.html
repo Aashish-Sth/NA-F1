@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Leaderboard</title>
+  <title>Leaderboard + Partners</title>
 
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Alpine for mobile nav toggle -->
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
   <style>
-    /* Small custom CSS to mimic your original variable colors and a few fine-tuning items. */
     :root{
       --bg: #121217;
       --panel: #15151F;
@@ -23,8 +24,8 @@
       --max-width: 1500px;
     }
 
-    /* Use the same font-ish fallback as original */
-    body { font-family: Inter, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; }
+    /* Use f1-b first as requested (falls back to other fonts) */
+    body { font-family: 'f1-b', Inter, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; }
 
     /* small helpers for table borders that Tailwind's default doesn't provide as rgba utility */
     .border-subtle { border-color: var(--border); }
@@ -40,119 +41,467 @@
 
     /* Keep table header background transparent feel */
     thead th { background: transparent; }
+
+    /* Container adjustments: navbar sits at top, so add spacing BEFORE the content */
+    .page-wrap { padding: 2rem; max-width: var(--max-width); margin: 0 auto; }
+
+    /* Partners section visuals (kept from original) */
+    .partners {
+      background: #0f1113;
+      color: #fff;
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+      margin-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.02);
+    }
+    .partners .heading {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      margin-bottom: 1.25rem;
+    }
+    .partners h2 {
+      font-family: 'f1-b', system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+      font-weight:800;
+      letter-spacing: .5px;
+      font-size: 1.5rem;
+      margin:0;
+    }
+    .partners-grid {
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 1.25rem;
+      align-items:center;
+    }
+    @media (min-width:640px) { .partners-grid { grid-template-columns: repeat(4, minmax(0,1fr)); } }
+    @media (min-width:1024px) { .partners-grid { grid-template-columns: repeat(6, minmax(0,1fr)); } }
+    @media (min-width:1400px) { .partners-grid { grid-template-columns: repeat(10, minmax(0,1fr)); } }
+
+    .partner-item {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 0.5rem;
+      background: transparent;
+      transition: transform .12s ease, filter .12s ease, opacity .12s ease;
+      opacity: 0.95;
+    }
+    .partner-item img {
+      max-height: 36px;
+      max-width: 100%;
+      object-fit: contain;
+      display:block;
+      filter: grayscale(0.0) brightness(1);
+    }
+    .partner-item:hover { transform: translateY(-3px); opacity: 1; }
+
+    .partners .bottom-row { margin-top: 1.75rem; border-top: 1px solid rgba(255,255,255,0.02); padding-top: 1.75rem; }
+    .view-all {
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      text-decoration: none;
+    }
+    .view-all:hover { text-decoration: underline; color: #fff; }
+
+    /* -------------------
+       Podium / Top 3 cards
+       ------------------- */
+    .podium {
+      margin-top: 30px;
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    /* card base */
+    .podium-card {
+      flex: 1 1 0;
+      min-width: 260px;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      color: white;
+      height: 210px; /* visible card area (cropped image will fill) */
+      padding: 18px;
+      box-sizing: border-box;
+    }
+
+    /* center (1st) is visually larger */
+    .podium-card.center {
+      flex-basis: 46%;
+      height: 260px;
+      border-radius: 10px;
+    }
+    .podium-card.left { flex-basis: 28%; height: 220px; }
+    .podium-card.right { flex-basis: 28%; height: 210px; }
+
+    /* background visuals similar to screenshot using team color */
+    .podium-card--mclaren { background: linear-gradient(90deg, rgba(255,122,0,0.95) 0%, rgba(150,70,0,0.9) 100%); }
+    .podium-card--redbull { background: linear-gradient(90deg, rgba(71,129,215,0.95) 0%, rgba(34,60,110,0.9) 100%); }
+
+    /* rank badge top-left */
+    .podium-rank {
+      position: absolute;
+      left: 18px;
+      top: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      font-size: 18px;
+      opacity: 0.95;
+    }
+
+    /* left text block */
+    .podium-meta {
+      z-index: 2;
+      max-width: 48%;
+    }
+    .podium-meta .name { font-weight: 800; font-size: 22px; margin-bottom: 6px; text-decoration: none; }
+    .podium-meta .team { font-size: 13px; color: rgba(255,255,255,0.85); margin-bottom: 10px; }
+
+    .podium-points {
+      position: absolute;
+      left: 18px;
+      bottom: 12px;
+      font-weight: 800;
+      font-size: 20px;
+      z-index: 2;
+    }
+
+    /* image wrapper: ensures image extends to knee and is cropped */
+    .driver-img-wrap {
+      position: absolute;
+      right: 12px;
+      bottom: 0;
+      top: 0;
+      width: 56%;
+      overflow: hidden;
+      display:block;
+      z-index: 1;
+    }
+
+    .driver-img {
+      
+      display: block;
+      width: auto;
+      min-width: 100%;
+      height: 420px; /* make image tall so crop shows down to knees */
+      object-fit: cover;
+      object-position: center 0%; /* adjust so image shows roughly knee area */
+      transform: translateY(0);
+    }
+
+    /* podium vertical placement to emulate podium height (1st > 2nd > 3rd) */
+    .podium-card.center { transform: translateY(-36px); box-shadow: 0 18px 30px rgba(0,0,0,0.6); }
+    .podium-card.left   { transform: translateY(-18px); box-shadow: 0 12px 22px rgba(0,0,0,0.45); }
+    .podium-card.right  { transform: translateY(0);     box-shadow: 0 8px 14px rgba(0,0,0,0.35); }
+
+    /* Slight responsive tweaks */
+    @media (max-width: 1024px) {
+      .podium { gap: 0.75rem; }
+      .podium-card.center { height: 220px; transform: translateY(-28px); }
+      .podium-card.left { height: 200px; transform: translateY(-12px); }
+      .podium-card.right { height: 190px; transform: translateY(0); }
+      .driver-img { height: 360px; object-position: center 25%; }
+    }
+
+    @media (max-width: 640px) {
+      .podium { flex-direction: column; gap: 0.9rem; align-items: stretch; }
+      .podium-card { transform: translateY(0) !important; height: 200px; }
+      .driver-img { height: 320px; object-position: center 25%; }
+      .podium-card.center { order: 1; }
+      .podium-card.left { order: 2; }
+      .podium-card.right { order: 3; }
+      .driver-img-wrap { position: absolute; width: 40%; }
+      .podium-meta { max-width: 56%; }
+    }
   </style>
 </head>
-<body class="bg-[color:var(--bg)] text-white p-8">
 
-  <div class="mx-auto" style="max-width: var(--max-width);">
-    <h1 class="text-3xl font-semibold mb-5">2025 RACE RESULTS</h1>
+<body class="bg-black text-white">
 
-    <!-- Tabs -->
-    <div class="mb-4">
-      <nav class="flex gap-2 border-b-0">
-        <button class="tab-btn px-4 py-2 rounded-md font-semibold bg-[color:var(--hover-bg)] text-white" data-target="races">Races</button>
-        <button class="tab-btn px-4 py-2 rounded-md text-white/90 hover:bg-[color:var(--hover-bg)]" data-target="drivers">Drivers</button>
-        <button class="tab-btn px-4 py-2 rounded-md text-white/90 hover:bg-[color:var(--hover-bg)]" data-target="teams">Teams</button>
-      </nav>
-    </div>
+  <!-- =========================
+       NAVIGATION (DO NOT CHANGE)
+       ========================= -->
+  <nav class="bg-gray-900" x-data="{ isOpen: false }">
+      <div class="px-4 sm:px-6 lg:px-8">
+        <div class="relative flex h-16 items-center justify-between w-100">
+          <div class="flex flex-shrink-0 items-center">
+            <a href="#">
+              <img
+                class="h-8 w-auto"
+                src="https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg"
+                alt="F1 Logo"
+              />
+            </a>
+          </div>
 
-    <!-- Panel -->
-    <div class="bg-[color:var(--panel)] border border-subtle rounded-lg p-5">
-      <!-- Tab content container -->
-      <div>
+          <div class="absolute inset-y-0 right-0 flex items-center lg:hidden">
+            <button
+              @click="isOpen = !isOpen"
+              type="button"
+              class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              aria-controls="mobile-menu"
+              aria-expanded="false"
+            >
+              <span class="sr-only">Open main menu</span>
+              <svg
+                x-show="!isOpen"
+                class="block h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                />
+              </svg>
+              <svg
+                x-show="isOpen"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
 
-        <!-- RACES TAB -->
-        <div id="races" class="tab-panel">
-          <div class="overflow-x-auto">
-            <table class="w-full table-auto text-sm">
-              <thead>
-                <tr class="text-xs uppercase tracking-wide font-semibold">
-                  <th class="text-left pb-3 border-b border-row">Grand Prix</th>
-                  <th class="hidden sm:table-cell text-left pb-3 border-b border-row w-32">Date</th>
-                  <th class="text-left pb-3 border-b border-row">Winner</th>
-                  <th class="text-left pb-3 border-b border-row">Team</th>
-                  <th class="hidden sm:table-cell text-center pb-3 border-b border-row w-20">Laps</th>
-                  <th class="hidden sm:table-cell text-left pb-3 border-b border-row w-40">Time</th>
-                </tr>
-              </thead>
+          <div class="hidden lg:ml-6 lg:block">
+            <div class="flex items-center space-x-4">
+              <a
+                href="index.html"
+                class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                >Home</a
+              >
+              <a
+                href="teams.html"
+                class="rounded-md bg-gray-800 px-3 py-2 text-sm font-medium text-white"
+                aria-current="page"
+                >Drivers & Teams</a
+              >
+              <a
+                href="#"
+                class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                >Schedule</a
+              >
+              <a
+                href="#"
+                class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                >Feedback</a
+              >
+              <a
+                href="#"
+                class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                >View cars</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
 
-              <tbody class="divide-y" style="border-color: var(--row-border);">
-                <!-- Row 1 -->
-                <tr class="hover-subtle">
-                  <td class="py-3">
-                    <div class="flex items-center gap-3 nowrap">
-                      <span class="w-11 h-11 rounded-full overflow-hidden flex-none"><img src="assets/Leaderboard/Flag/australia.png" alt="Australia flag" class="w-full h-full object-cover"></span>
-                      <div class="font-semibold">Australia</div>
-                    </div>
-                  </td>
-                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">16 Mar</td>
-                  <td class="py-3">
-                    <div class="flex items-center gap-3 nowrap">
-                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background: var(--color-orange);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/mclaren/lannor01/2025mclarenlannor01right.webp" alt="Lando Norris" class="avatar-img large w-full h-full"></span>
-                      <div>Lando Norris</div>
-                    </div>
-                  </td>
-                  <td class="py-3">
-                    <div class="flex items-center gap-3 nowrap">
-                      <span class="w-11 h-11 rounded-full flex-none overflow-hidden" style="background: var(--color-orange);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/v1740000000/common/f1/2025/mclaren/2025mclarenlogowhite.webp" alt="McLaren" class="avatar-img small w-full h-full"></span>
-                      <div>McLaren</div>
-                    </div>
-                  </td>
-                  <td class="hidden sm:table-cell py-3 text-center font-semibold">57</td>
-                  <td class="hidden sm:table-cell py-3">1:42:06.304</td>
-                </tr>
+      <div x-show="isOpen" class="lg:hidden" id="mobile-menu">
+        <div class="space-y-1 px-2 pb-3 pt-2">
+          <a
+            href="index.html"
+            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+            >Home</a
+          >
+          <a
+            href="teams.html"
+            class="block rounded-md bg-gray-800 px-3 py-2 text-base font-medium text-white"
+            aria-current="page"
+            >Drivers & Teams</a
+          >
+          <a
+            href="#"
+            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+            >Schedule</a
+          >
+          <a
+            href="#"
+            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+            >Feedback</a
+          >
+          <a
+            href="#"
+            class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+            >View cars</a
+          >
+        </div>
+      </div>
+    </nav>
 
-                <!-- Row 2 -->
-                <tr class="hover-subtle">
-                  <td class="py-3">
-                    <div class="flex items-center gap-3 nowrap">
-                      <span class="w-11 h-11 rounded-full overflow-hidden flex-none"><img src="assets/Leaderboard/Flag/china.png" alt="China flag" class="w-full h-full object-cover"></span>
-                      <div class="font-semibold">China</div>
-                    </div>
-                  </td>
-                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">23 Mar</td>
-                  <td class="py-3">
-                    <div class="flex items-center gap-3 nowrap">
-                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background: var(--color-orange);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/mclaren/oscpia01/2025mclarenoscpia01right.webp" alt="Oscar Piastri" class="avatar-img large w-full h-full"></span>
-                      <div>Oscar Piastri</div>
-                    </div>
-                  </td>
-                  <td class="py-3">
-                    <div class="flex items-center gap-3 nowrap">
-                      <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background: var(--color-orange);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/v1740000000/common/f1/2025/mclaren/2025mclarenlogowhite.webp" alt="McLaren" class="avatar-img small w-full h-full"></span>
-                      <div>McLaren</div>
-                    </div>
-                  </td>
-                  <td class="hidden sm:table-cell py-3 text-center font-semibold">56</td>
-                  <td class="hidden sm:table-cell py-3">1:30:55.026</td>
-                </tr>
+  <!-- Page content -->
+  <div class="page-wrap" style="padding-top: 76px;">
+    <!-- Leaderboard content (merged) -->
+    <div class="mx-auto" style="max-width: var(--max-width);">
+      <!-- TITLE (will change based on active tab) -->
+      <h1 id="page-title" class="text-3xl font-semibold mb-5">2025 RACE RESULT</h1>
 
-                <!-- Row 3 -->
-                <tr class="hover-subtle">
-                  <td class="py-3">
-                    <div class="flex items-center gap-3 nowrap">
-                      <span class="w-11 h-11 rounded-full overflow-hidden flex-none"><img src="assets/Leaderboard/Flag/japan.png" alt="Japan flag" class="w-full h-full object-cover"></span>
-                      <div class="font-semibold">Japan</div>
-                    </div>
-                  </td>
-                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">06 Apr</td>
-                  <td class="py-3">
-                    <div class="flex items-center gap-3 nowrap">
-                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background: var(--color-lightblue);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/redbullracing/maxver01/2025redbullracingmaxver01right.webp" alt="Max Verstappen" class="avatar-img large w-full h-full"></span>
-                      <div>Max Verstappen</div>
-                    </div>
-                  </td>
-                  <td class="py-3">
-                    <div class="flex items-center gap-3 nowrap">
-                      <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background: var(--color-lightblue);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/v1740000000/common/f1/2025/redbullracing/2025redbullracinglogowhite.webp" alt="Red Bull" class="avatar-img small w-full h-full"></span>
-                      <div>Red Bull Racing</div>
-                    </div>
-                  </td>
-                  <td class="hidden sm:table-cell py-3 text-center font-semibold">53</td>
-                  <td class="hidden sm:table-cell py-3">1:22:06.983</td>
-                </tr>
+      <!-- Tabs -->
+      <div class="mb-4">
+        <nav class="flex gap-2 border-b-0">
+          <button class="tab-btn px-4 py-2 rounded-md font-semibold bg-[color:var(--hover-bg)] text-white" data-target="races">Races</button>
+          <button class="tab-btn px-4 py-2 rounded-md text-white/90 hover:bg-[color:var(--hover-bg)]" data-target="drivers">Drivers</button>
+          <button class="tab-btn px-4 py-2 rounded-md text-white/90 hover:bg-[color:var(--hover-bg)]" data-target="teams">Teams</button>
+        </nav>
+      </div>
 
-                <!-- Row 4 -->
+      <!-- Panel (combined) -->
+      <div class="bg-[color:var(--panel)] border border-subtle rounded-lg p-5">
+        <div>
+
+          <!-- RACES TAB -->
+          <div id="races" class="tab-panel">
+            <!-- Podium top 3 (also present in other tabs) -->
+            <div class="podium mb-6">
+              <!-- 2nd -->
+              <div class="podium-card left podium-card--mclaren" role="group" aria-label="2nd place">
+                <div class="podium-rank">2ND</div>
+                <div class="podium-meta">
+                  <div class="name">Lando Norris</div>
+                  <div class="team">McLaren</div>
+                </div>
+                <div class="podium-points">275 PTS</div>
+                <div class="driver-img-wrap">
+                  <img class="driver-img" src="https://media.formula1.com/image/upload/c_fill,w_640/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/mclaren/lannor01/2025mclarenlannor01right.webp" alt="Lando Norris">
+                </div>
+              </div>
+
+              <!-- 1st -->
+              <div class="podium-card center podium-card--mclaren" role="group" aria-label="1st place">
+                <div class="podium-rank">1ST</div>
+                <div class="podium-meta">
+                  <div class="name">Oscar Piastri</div>
+                  <div class="team">McLaren</div>
+                </div>
+                <div class="podium-points">284 PTS</div>
+                <div class="driver-img-wrap">
+                  <img class="driver-img" src="https://media.formula1.com/image/upload/c_fill,w_640/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/mclaren/oscpia01/2025mclarenoscpia01right.webp" alt="Oscar Piastri">
+                </div>
+              </div>
+
+              <!-- 3rd -->
+              <div class="podium-card right podium-card--redbull" role="group" aria-label="3rd place">
+                <div class="podium-rank">3RD</div>
+                <div class="podium-meta">
+                  <div class="name">Max Verstappen</div>
+                  <div class="team">Red Bull Racing</div>
+                </div>
+                <div class="podium-points">187 PTS</div>
+                <div class="driver-img-wrap">
+                  <img class="driver-img" src="https://media.formula1.com/image/upload/c_fill,w_640/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/redbullracing/maxver01/2025redbullracingmaxver01right.webp" alt="Max Verstappen">
+                </div>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full table-auto text-sm">
+                <thead>
+                  <tr class="text-xs uppercase tracking-wide font-semibold">
+                    <th class="text-left pb-3 border-b border-row">Grand Prix</th>
+                    <th class="hidden sm:table-cell text-left pb-3 border-b border-row w-32">Date</th>
+                    <th class="text-left pb-3 border-b border-row">Winner</th>
+                    <th class="text-left pb-3 border-b border-row">Team</th>
+                    <th class="hidden sm:table-cell text-center pb-3 border-b border-row w-20">Laps</th>
+                    <th class="hidden sm:table-cell text-left pb-3 border-b border-row w-40">Time</th>
+                  </tr>
+                </thead>
+
+                <tbody class="divide-y" style="border-color: var(--row-border);">
+                  <!-- Rows copied from your part1 (kept intact) -->
+                  <tr class="hover-subtle">
+                    <td class="py-3">
+                      <div class="flex items-center gap-3 nowrap">
+                        <span class="w-11 h-11 rounded-full overflow-hidden flex-none"><img src="assets/Leaderboard/Flag/australia.png" alt="Australia flag" class="w-full h-full object-cover"></span>
+                        <div class="font-semibold">Australia</div>
+                      </div>
+                    </td>
+                    <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">16 Mar</td>
+                    <td class="py-3">
+                      <div class="flex items-center gap-3 nowrap">
+                        <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background: var(--color-orange);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/mclaren/lannor01/2025mclarenlannor01right.webp" alt="Lando Norris" class="avatar-img large w-full h-full"></span>
+                        <div>Lando Norris</div>
+                      </div>
+                    </td>
+                    <td class="py-3">
+                      <div class="flex items-center gap-3 nowrap">
+                        <span class="w-11 h-11 rounded-full flex-none overflow-hidden" style="background: var(--color-orange);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/v1740000000/common/f1/2025/mclaren/2025mclarenlogowhite.webp" alt="McLaren" class="avatar-img small w-full h-full"></span>
+                        <div>McLaren</div>
+                      </div>
+                    </td>
+                    <td class="hidden sm:table-cell py-3 text-center font-semibold">57</td>
+                    <td class="hidden sm:table-cell py-3">1:42:06.304</td>
+                  </tr>
+
+                  <!-- Additional race rows (left intact from part1) -->
+                  <!-- Row 2 -->
+                  <tr class="hover-subtle">
+                    <td class="py-3">
+                      <div class="flex items-center gap-3 nowrap">
+                        <span class="w-11 h-11 rounded-full overflow-hidden flex-none"><img src="assets/Leaderboard/Flag/china.png" alt="China flag" class="w-full h-full object-cover"></span>
+                        <div class="font-semibold">China</div>
+                      </div>
+                    </td>
+                    <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">23 Mar</td>
+                    <td class="py-3">
+                      <div class="flex items-center gap-3 nowrap">
+                        <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background: var(--color-orange);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/mclaren/oscpia01/2025mclarenoscpia01right.webp" alt="Oscar Piastri" class="avatar-img large w-full h-full"></span>
+                        <div>Oscar Piastri</div>
+                      </div>
+                    </td>
+                    <td class="py-3">
+                      <div class="flex items-center gap-3 nowrap">
+                        <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background: var(--color-orange);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/v1740000000/common/f1/2025/mclaren/2025mclarenlogowhite.webp" alt="McLaren" class="avatar-img small w-full h-full"></span>
+                        <div>McLaren</div>
+                      </div>
+                    </td>
+                    <td class="hidden sm:table-cell py-3 text-center font-semibold">56</td>
+                    <td class="hidden sm:table-cell py-3">1:30:55.026</td>
+                  </tr>
+
+                  <!-- Row 3 -->
+                  <tr class="hover-subtle">
+                    <td class="py-3">
+                      <div class="flex items-center gap-3 nowrap">
+                        <span class="w-11 h-11 rounded-full overflow-hidden flex-none"><img src="assets/Leaderboard/Flag/japan.png" alt="Japan flag" class="w-full h-full object-cover"></span>
+                        <div class="font-semibold">Japan</div>
+                      </div>
+                    </td>
+                    <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">06 Apr</td>
+                    <td class="py-3">
+                      <div class="flex items-center gap-3 nowrap">
+                        <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background: var(--color-lightblue);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/redbullracing/maxver01/2025redbullracingmaxver01right.webp" alt="Max Verstappen" class="avatar-img large w-full h-full"></span>
+                        <div>Max Verstappen</div>
+                      </div>
+                    </td>
+                    <td class="py-3">
+                      <div class="flex items-center gap-3 nowrap">
+                        <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background: var(--color-lightblue);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/v1740000000/common/f1/2025/redbullracing/2025redbullracinglogowhite.webp" alt="Red Bull" class="avatar-img small w-full h-full"></span>
+                        <div>Red Bull Racing</div>
+                      </div>
+                    </td>
+                    <td class="hidden sm:table-cell py-3 text-center font-semibold">53</td>
+                    <td class="hidden sm:table-cell py-3">1:22:06.983</td>
+                  </tr>
+
+                  <!-- Row 4 -->
                 <tr class="hover-subtle">
                   <td class="py-3">
                     <div class="flex items-center gap-3 nowrap">
@@ -570,7 +919,7 @@
                   </td>
                   <td class="py-3">
                     <div class="flex items-center gap-3 nowrap">
-                      <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background: var(--color-lightblue);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/v1740000000/common/f1/2025/redbullracing/2025redbullracinglogowhite.webp" alt="Team 20" class="avatar-img small w-full h-full"></span>
+                      <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background: var(--color-orange);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/v1740000000/common/f1/2025/redbullracing/2025redbullracinglogowhite.webp" alt="Team 20" class="avatar-img small w-full h-full"></span>
                       <div>Red Bull Racing</div>
                     </div>
                   </td>
@@ -578,73 +927,111 @@
                   <td class="hidden sm:table-cell py-3">1:34:22.111</td>
                 </tr>
 
-              </tbody>
-            </table>
+                  <!-- (other rows from part1 are preserved below) -->
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
 
-        <!-- DRIVERS TAB -->
-        <div id="drivers" class="tab-panel hidden mt-2">
-          <div class="overflow-x-auto">
-            <table class="w-full table-auto text-sm">
-              <thead>
-                <tr class="text-xs uppercase tracking-wide font-semibold">
-                  <th class="pb-3 border-b border-row w-16 text-left">POS.</th>
-                  <th class="pb-3 border-b border-row text-left">Driver</th>
-                  <th class="hidden sm:table-cell pb-3 border-b border-row w-24 text-left">Nationality</th>
-                  <th class="pb-3 border-b border-row text-left">Team</th>
-                  <th class="pb-3 border-b border-row w-24 text-right">PTS</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y" style="border-color: var(--row-border);">
-                <!-- Driver 1 -->
-                <tr class="hover-subtle">
-                  <td class="py-3 font-bold text-center">1</td>
-                  <td class="py-3">
-                    <div class="flex items-center gap-3 nowrap">
-                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background: var(--color-orange);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/mclaren/oscpia01/2025mclarenoscpia01right.webp" alt="Oscar Piastri" class="avatar-img large w-full h-full"></span>
-                      <div class="font-semibold">Oscar Piastri</div>
-                    </div>
-                  </td>
-                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">AUS</td>
-                  <td class="py-3">McLaren</td>
-                  <td class="py-3 text-right font-bold">284</td>
-                </tr>
+          <!-- DRIVERS TAB (from part2) -->
+          <div id="drivers" class="tab-panel hidden mt-2">
+            <!-- Podium inside Drivers tab -->
+            <div class="podium mb-6">
+              <div class="podium-card left podium-card--mclaren">
+                <div class="podium-rank">2ND</div>
+                <div class="podium-meta">
+                  <div class="name">Lando Norris</div>
+                  <div class="team">McLaren</div>
+                </div>
+                <div class="podium-points">275 PTS</div>
+                <div class="driver-img-wrap">
+                  <img class="driver-img" src="https://media.formula1.com/image/upload/c_fill,w_640/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/mclaren/lannor01/2025mclarenlannor01right.webp" alt="Lando Norris">
+                </div>
+              </div>
 
-                <!-- Driver 2 -->
-                <tr class="hover-subtle">
-                  <td class="py-3 font-bold text-center">2</td>
-                  <td class="py-3">
-                    <div class="flex items-center gap-3 nowrap">
-                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background: var(--color-orange);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/mclaren/lannor01/2025mclarenlannor01right.webp" alt="Lando Norris" class="avatar-img large w-full h-full"></span>
-                      <div class="font-semibold">Lando Norris</div>
-                    </div>
-                  </td>
-                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">GBR</td>
-                  <td class="py-3">McLaren</td>
-                  <td class="py-3 text-right font-bold">275</td>
-                </tr>
+              <div class="podium-card center podium-card--mclaren">
+                <div class="podium-rank">1ST</div>
+                <div class="podium-meta">
+                  <div class="name">Oscar Piastri</div>
+                  <div class="team">McLaren</div>
+                </div>
+                <div class="podium-points">284 PTS</div>
+                <div class="driver-img-wrap">
+                  <img class="driver-img" src="https://media.formula1.com/image/upload/c_fill,w_640/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/mclaren/oscpia01/2025mclarenoscpia01right.webp" alt="Oscar Piastri">
+                </div>
+              </div>
 
-                <!-- Driver 3 -->
-                <tr class="hover-subtle">
-                  <td class="py-3 font-bold text-center">3</td>
-                  <td class="py-3">
-                    <div class="flex items-center gap-3 nowrap">
-                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background: var(--color-lightblue);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/redbullracing/maxver01/2025redbullracingmaxver01right.webp" alt="Max Verstappen" class="avatar-img large w-full h-full"></span>
-                      <div class="font-semibold">Max Verstappen</div>
-                    </div>
-                  </td>
-                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">NED</td>
-                  <td class="py-3">Red Bull Racing</td>
-                  <td class="py-3 text-right font-bold">187</td>
-                </tr>
+              <div class="podium-card right podium-card--redbull">
+                <div class="podium-rank">3RD</div>
+                <div class="podium-meta">
+                  <div class="name">Max Verstappen</div>
+                  <div class="team">Red Bull Racing</div>
+                </div>
+                <div class="podium-points">187 PTS</div>
+                <div class="driver-img-wrap">
+                  <img class="driver-img" src="https://media.formula1.com/image/upload/c_fill,w_640/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/redbullracing/maxver01/2025redbullracingmaxver01right.webp" alt="Max Verstappen">
+                </div>
+              </div>
+            </div>
 
-                <!-- Driver 4 -->
+            <div class="overflow-x-auto">
+              <table class="w-full table-auto text-sm">
+                <thead>
+                  <tr class="text-xs uppercase tracking-wide font-semibold">
+                    <th class="pb-3 border-b border-row w-16 text-left">POS.</th>
+                    <th class="pb-3 border-b border-row text-left">Driver</th>
+                    <th class="hidden sm:table-cell pb-3 border-b border-row w-24 text-left">Nationality</th>
+                    <th class="pb-3 border-b border-row text-left">Team</th>
+                    <th class="pb-3 border-b border-row w-24 text-right">PTS</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y" style="border-color: var(--row-border);">
+                  <!-- Drivers data copied from part1 & part2 (preserved) -->
+                  <tr class="hover-subtle">
+                    <td class="py-3 font-bold text-center">1</td>
+                    <td class="py-3">
+                      <div class="flex items-center gap-3 nowrap">
+                        <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background: var(--color-orange);"><img src="https://media.formula1.com/image/upload/c_fill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/mclaren/oscpia01/2025mclarenoscpia01right.webp" alt="Oscar Piastri" class="avatar-img large w-full h-full"></span>
+                        <div class="font-semibold">Oscar Piastri</div>
+                      </div>
+                    </td>
+                    <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">AUS</td>
+                    <td class="py-3">McLaren</td>
+                    <td class="py-3 text-right font-bold">284</td>
+                  </tr>
+
+                  <tr class="hover-subtle">
+                    <td class="py-3 font-bold text-center">2</td>
+                    <td class="py-3">
+                      <div class="flex items-center gap-3 nowrap">
+                        <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background: var(--color-orange);"><img src="https://media.formula1.com/image/upload/c_fill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/mclaren/lannor01/2025mclarenlannor01right.webp" alt="Lando Norris" class="avatar-img large w-full h-full"></span>
+                        <div class="font-semibold">Lando Norris</div>
+                      </div>
+                    </td>
+                    <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">GBR</td>
+                    <td class="py-3">McLaren</td>
+                    <td class="py-3 text-right font-bold">275</td>
+                  </tr>
+
+                  <tr class="hover-subtle">
+                    <td class="py-3 font-bold text-center">3</td>
+                    <td class="py-3">
+                      <div class="flex items-center gap-3 nowrap">
+                        <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background: var(--color-lightblue);"><img src="https://media.formula1.com/image/upload/c_fill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/redbullracing/maxver01/2025redbullracingmaxver01right.webp" alt="Max Verstappen" class="avatar-img large w-full h-full"></span>
+                        <div class="font-semibold">Max Verstappen</div>
+                      </div>
+                    </td>
+                    <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">NED</td>
+                    <td class="py-3">Red Bull Racing</td>
+                    <td class="py-3 text-right font-bold">187</td>
+                  </tr>
+
+                  <!-- Driver 4 -->
                 <tr class="hover-subtle">
                   <td class="py-3 font-bold text-center">4</td>
                   <td class="py-3">
                     <div class="flex items-center gap-3 nowrap">
-                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background: var(--color-lightgreen);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/mercedes/georus01/2025mercedesgeorus01right.webp" alt="George Russell" class="avatar-img large w-full h-full"></span>
+                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background: var(--color-lightgreen);"><img src="https://media.formula1.com/image/upload/c_fill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/mercedes/georus01/2025mercedesgeorus01right.webp" alt="George Russell" class="avatar-img large w-full h-full"></span>
                       <div class="font-semibold">George Russell</div>
                     </div>
                   </td>
@@ -658,7 +1045,7 @@
                   <td class="py-3 font-bold text-center">5</td>
                   <td class="py-3">
                     <div class="flex items-center gap-3 nowrap">
-                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background: var(--color-orange);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/ferrari/chalec01/2025ferrarichalec01right.webp" alt="Charles Leclerc" class="avatar-img large w-full h-full"></span>
+                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background: var(--color-orange);"><img src="https://media.formula1.com/image/upload/c_fill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/ferrari/chalec01/2025ferrarichalec01right.webp" alt="Charles Leclerc" class="avatar-img large w-full h-full"></span>
                       <div class="font-semibold">Charles Leclerc</div>
                     </div>
                   </td>
@@ -667,72 +1054,512 @@
                   <td class="py-3 text-right font-bold">151</td>
                 </tr>
 
-                <!-- Add more driver rows as needed -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- TEAMS TAB -->
-        <div id="teams" class="tab-panel hidden mt-2">
-          <div class="overflow-x-auto">
-            <table class="w-full table-auto text-sm">
-              <thead>
-                <tr class="text-xs uppercase tracking-wide font-semibold">
-                  <th class="pb-3 border-b border-row w-16 text-left">POS.</th>
-                  <th class="pb-3 border-b border-row text-left">Team</th>
-                  <th class="pb-3 border-b border-row w-24 text-right">PTS</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y" style="border-color: var(--row-border);">
+                <!-- Driver 6 -->
                 <tr class="hover-subtle">
-                  <td class="py-3 font-bold text-center">1</td>
+                  <td class="py-3 font-bold text-center">6</td>
                   <td class="py-3">
                     <div class="flex items-center gap-3 nowrap">
-                      <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background: var(--color-orange);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/v1740000000/common/f1/2025/mclaren/2025mclarenlogowhite.webp" alt="McLaren" class="avatar-img small w-full h-full"></span>
-                      <div class="font-semibold">McLaren</div>
+                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background:#C40016;"><img src="https://media.formula1.com/image/upload/c_fill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/ferrari/lewham01/2025ferrarilewham01right.webp" alt="Lewis Hamilton" class="avatar-img large w-full h-full"></span>
+                      <div class="font-semibold">Lewis Hamilton</div>
                     </div>
                   </td>
-                  <td class="py-3 text-right font-bold">559</td>
+                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">GBR</td>
+                  <td class="py-3">Ferrari</td>
+                  <td class="py-3 text-right font-bold">109</td>
                 </tr>
 
+                <!-- Driver 7 -->
                 <tr class="hover-subtle">
-                  <td class="py-3 font-bold text-center">2</td>
+                  <td class="py-3 font-bold text-center">7</td>
                   <td class="py-3">
                     <div class="flex items-center gap-3 nowrap">
-                      <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background: var(--color-lightblue);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/v1740000000/common/f1/2025/redbullracing/2025redbullracinglogowhite.webp" alt="Red Bull" class="avatar-img small w-full h-full"></span>
+                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background:var(--color-lightgreen);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/mercedes/andant01/2025mercedesandant01right.webp" alt="Kimi Antonelli" class="avatar-img large w-full h-full"></span>
+                      <div class="font-semibold">Kimi Antonelli</div>
+                    </div>
+                  </td>
+                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">ITA</td>
+                  <td class="py-3">Mercedes</td>
+                  <td class="py-3 text-right font-bold">64</td>
+                </tr>
+
+                <!-- Driver 8 -->
+                <tr class="hover-subtle">
+                  <td class="py-3 font-bold text-center">8</td>
+                  <td class="py-3">
+                    <div class="flex items-center gap-3 nowrap">
+                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background:var(--color-lightblue);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/williams/alealb01/2025williamsalealb01right.webp" alt="Alexander Albon" class="avatar-img large w-full h-full"></span>
+                      <div class="font-semibold">Alexander Albon</div>
+                    </div>
+                  </td>
+                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">THA</td>
+                  <td class="py-3">Williams</td>
+                  <td class="py-3 text-right font-bold">54</td>
+                </tr>
+
+                <!-- Driver 9 -->
+                <tr class="hover-subtle">
+                  <td class="py-3 font-bold text-center">9</td>
+                  <td class="py-3">
+                    <div class="flex items-center gap-3 nowrap">
+                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background:var(--color-lightgreen);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/kicksauber/nichul01/2025kicksaubernichul01right.webp" alt="Nico Hulkenberg" class="avatar-img large w-full h-full"></span>
+                      <div class="font-semibold">Nico Hulkenberg</div>
+                    </div>
+                  </td>
+                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">GER</td>
+                  <td class="py-3">Kick Sauber</td>
+                  <td class="py-3 text-right font-bold">37</td>
+                </tr>
+
+                <!-- Driver 10 -->
+                <tr class="hover-subtle">
+                  <td class="py-3 font-bold text-center">10</td>
+                  <td class="py-3">
+                    <div class="flex items-center gap-3 nowrap">
+                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background:#9B9B9B;"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/haas/estoco01/2025haasestoco01right.webp" alt="Esteban Ocon" class="avatar-img large w-full h-full"></span>
+                      <div class="font-semibold">Esteban Ocon</div>
+                    </div>
+                  </td>
+                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">FRA</td>
+                  <td class="py-3">Haas</td>
+                  <td class="py-3 text-right font-bold">27</td>
+                </tr>
+
+                <!-- Driver 11 -->
+                <tr class="hover-subtle">
+                  <td class="py-3 font-bold text-center">11</td>
+                  <td class="py-3">
+                    <div class="flex items-center gap-3 nowrap">
+                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background:#2FA37C;"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/astonmartin/feralo01/2025astonmartinferalo01right.webp" alt="Fernando Alonso" class="avatar-img large w-full h-full"></span>
+                      <div class="font-semibold">Fernando Alonso</div>
+                    </div>
+                  </td>
+                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">ESP</td>
+                  <td class="py-3">Aston Martin</td>
+                  <td class="py-3 text-right font-bold">26</td>
+                </tr>
+
+                <!-- Driver 12 -->
+                <tr class="hover-subtle">
+                  <td class="py-3 font-bold text-center">12</td>
+                  <td class="py-3">
+                    <div class="flex items-center gap-3 nowrap">
+                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background:#2FA37C;"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/astonmartin/lanstr01/2025astonmartinlanstr01right.webp" alt="Lance Stroll" class="avatar-img large w-full h-full"></span>
+                      <div class="font-semibold">Lance Stroll</div>
+                    </div>
+                  </td>
+                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">CAN</td>
+                  <td class="py-3">Aston Martin</td>
+                  <td class="py-3 text-right font-bold">26</td>
+                </tr>
+
+                <!-- Driver 13 -->
+                <tr class="hover-subtle">
+                  <td class="py-3 font-bold text-center">13</td>
+                  <td class="py-3">
+                    <div class="flex items-center gap-3 nowrap">
+                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background:var(--color-lightblue);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/racingbulls/isahad01/2025racingbullsisahad01right.webp" alt="Isack Hadjar" class="avatar-img large w-full h-full"></span>
+                      <div class="font-semibold">Isack Hadjar</div>
+                    </div>
+                  </td>
+                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">FRA</td>
+                  <td class="py-3">Racing Bulls</td>
+                  <td class="py-3 text-right font-bold">22</td>
+                </tr>
+
+                <!-- Driver 14 -->
+                <tr class="hover-subtle">
+                  <td class="py-3 font-bold text-center">14</td>
+                  <td class="py-3">
+                    <div class="flex items-center gap-3 nowrap">
+                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background:var(--color-lightblue);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/alpine/piegas01/2025alpinepiegas01right.webp" alt="Pierre Gasly" class="avatar-img large w-full h-full"></span>
+                      <div class="font-semibold">Pierre Gasly</div>
+                    </div>
+                  </td>
+                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">FRA</td>
+                  <td class="py-3">Alpine</td>
+                  <td class="py-3 text-right font-bold">20</td>
+                </tr>
+
+                <!-- Driver 15 -->
+                <tr class="hover-subtle">
+                  <td class="py-3 font-bold text-center">15</td>
+                  <td class="py-3">
+                    <div class="flex items-center gap-3 nowrap">
+                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background:var(--color-lightblue);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/racingbulls/lialaw01/2025racingbullslialaw01right.webp" alt="Liam Lawson" class="avatar-img large w-full h-full"></span>
+                      <div class="font-semibold">Liam Lawson</div>
+                    </div>
+                  </td>
+                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">NZL</td>
+                  <td class="py-3">Racing Bulls</td>
+                  <td class="py-3 text-right font-bold">20</td>
+                </tr>
+
+                <!-- Driver 16 -->
+                <tr class="hover-subtle">
+                  <td class="py-3 font-bold text-center">16</td>
+                  <td class="py-3">
+                    <div class="flex items-center gap-3 nowrap">
+                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background:var(--color-lightblue);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/williams/carsai01/2025williamscarsai01right.webp" alt="Carlos Sainz" class="avatar-img large w-full h-full"></span>
+                      <div class="font-semibold">Carlos Sainz</div>
+                    </div>
+                  </td>
+                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">ESP</td>
+                  <td class="py-3">Williams</td>
+                  <td class="py-3 text-right font-bold">16</td>
+                </tr>
+
+                <!-- Driver 17 -->
+                <tr class="hover-subtle">
+                  <td class="py-3 font-bold text-center">17</td>
+                  <td class="py-3">
+                    <div class="flex items-center gap-3 nowrap">
+                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background:var(--color-lightgreen);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/kicksauber/gabbor01/2025kicksaubergabbor01right.webp" class="avatar-img large w-full h-full"></span>
+                      <div class="font-semibold">Gabriel Bortoleto</div>
+                    </div>
+                  </td>
+                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">BRA</td>
+                  <td class="py-3">Kick Sauber</td>
+                  <td class="py-3 text-right font-bold">14</td>
+                </tr>
+
+                <!-- Driver 18 -->
+                <tr class="hover-subtle">
+                  <td class="py-3 font-bold text-center">18</td>
+                  <td class="py-3">
+                    <div class="flex items-center gap-3 nowrap">
+                      <span class="w-12 h-12 rounded-full overflow-hidden flex-none" style="background:var(--color-lightblue);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/redbullracing/yuktsu01/2025redbullracingyuktsu01right.webp" alt="Yuki Tsunoda" class="avatar-img large w-full h-full"></span>
+                      <div class="font-semibold">Yuki Tsunoda</div>
+                    </div>
+                  </td>
+                  <td class="hidden sm:table-cell py-3 text-[14px] text-white/80">JPN</td>
+                  <td class="py-3">Red Bull Racing</td>
+                  <td class="py-3 text-right font-bold">10</td>
+                </tr>
+
+
+                  <!-- The rest of drivers (6..18 etc) preserved from part2 -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TEAMS TAB (from part2) -->
+          <div id="teams" class="tab-panel hidden mt-2">
+            <!-- Podium inside Teams tab -->
+            <div class="podium mb-6">
+              <div class="podium-card left podium-card--mclaren">
+                <div class="podium-rank">2ND</div>
+                <div class="podium-meta">
+                  <div class="name">Lando Norris</div>
+                  <div class="team">McLaren</div>
+                </div>
+                <div class="podium-points">275 PTS</div>
+                <div class="driver-img-wrap">
+                  <img class="driver-img" src="https://media.formula1.com/image/upload/c_fill,w_640/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/mclaren/lannor01/2025mclarenlannor01right.webp" alt="Lando Norris">
+                </div>
+              </div>
+
+              <div class="podium-card center podium-card--mclaren">
+                <div class="podium-rank">1ST</div>
+                <div class="podium-meta">
+                  <div class="name">Oscar Piastri</div>
+                  <div class="team">McLaren</div>
+                </div>
+                <div class="podium-points">284 PTS</div>
+                <div class="driver-img-wrap">
+                  <img class="driver-img" src="https://media.formula1.com/image/upload/c_fill,w_640/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/mclaren/oscpia01/2025mclarenoscpia01right.webp" alt="Oscar Piastri">
+                </div>
+              </div>
+
+              <div class="podium-card right podium-card--redbull">
+                <div class="podium-rank">3RD</div>
+                <div class="podium-meta">
+                  <div class="name">Max Verstappen</div>
+                  <div class="team">Red Bull Racing</div>
+                </div>
+                <div class="podium-points">187 PTS</div>
+                <div class="driver-img-wrap">
+                  <img class="driver-img" src="https://media.formula1.com/image/upload/c_fill,w_640/q_auto/d_common:f1:2025:fallback:driver:2025fallbackdriverright.webp/v1740000000/common/f1/2025/redbullracing/maxver01/2025redbullracingmaxver01right.webp" alt="Max Verstappen">
+                </div>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full table-auto text-sm">
+                <thead>
+                  <tr class="text-xs uppercase tracking-wide font-semibold">
+                    <th class="pb-3 border-b border-row w-16 text-left">POS.</th>
+                    <th class="pb-3 border-b border-row text-left">Team</th>
+                    <th class="pb-3 border-b border-row w-24 text-right">PTS</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y" style="border-color: var(--row-border);">
+
+                  <!-- Teams data preserved from part2 -->
+                  <tr class="hover-subtle">
+                    <td class="py-3 font-bold text-center">1</td>
+                    <td class="py-3">
+                      <div class="flex items-center gap-3 nowrap">
+                        <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background: var(--color-orange);"><img src="https://media.formula1.com/image/upload/c_fill,w_64/q_auto/v1740000000/common/f1/2025/mclaren/2025mclarenlogowhite.webp" alt="McLaren" class="avatar-img small w-full h-full"></span>
+                        <div class="font-semibold">McLaren</div>
+                      </div>
+                    </td>
+                    <td class="py-3 text-right font-bold">559</td>
+                  </tr>
+
+                  <tr class="hover-subtle">
+                    <td class="py-3 font-bold text-center">2</td>
+                    <td class="py-3">
+                      <div class="flex items-center gap-3 nowrap">
+                        <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background:#C40016;"><img src="https://media.formula1.com/image/upload/c_fill,w_64/q_auto/v1740000000/common/f1/2025/ferrari/2025ferrarilogowhite.webp" alt="Ferrari" class="avatar-img small w-full h-full"></span>
+                        <div class="font-semibold">Ferrari</div>
+                      </div>
+                    </td>
+                    <td class="py-3 text-right font-bold">260</td>
+                  </tr>
+
+                  <tr class="hover-subtle">
+                    <td class="py-3 font-bold text-center">3</td>
+                    <td class="py-3">
+                      <div class="flex items-center gap-3 nowrap">
+                        <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background: var(--color-lightgreen);"><img src="https://media.formula1.com/image/upload/c_fill,w_64/q_auto/v1740000000/common/f1/2025/mercedes/2025mercedeslogowhite.webp" alt="Mercedes" class="avatar-img small w-full h-full"></span>
+                        <div class="font-semibold">Mercedes</div>
+                      </div>
+                    </td>
+                    <td class="py-3 text-right font-bold">236</td>
+                  </tr>
+
+                  <!-- Team 4 -->
+                <tr class="hover-subtle">
+                  <td class="py-3 font-bold text-center">4</td>
+                  <td class="py-3">
+                    <div class="flex items-center gap-3 nowrap">
+                      <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background: var(--color-lightblue);"><img src="https://media.formula1.com/image/upload/c_fill,w_64/q_auto/v1740000000/common/f1/2025/redbullracing/2025redbullracinglogowhite.webp" alt="Red Bull Racing" class="avatar-img small w-full h-full"></span>
                       <div class="font-semibold">Red Bull Racing</div>
                     </div>
                   </td>
-                  <td class="py-3 text-right font-bold">374</td>
+                  <td class="py-3 text-right font-bold">194</td>
                 </tr>
 
+                <!-- Team 5 -->
                 <tr class="hover-subtle">
-                  <td class="py-3 font-bold text-center">3</td>
+                  <td class="py-3 font-bold text-center">5</td>
                   <td class="py-3">
                     <div class="flex items-center gap-3 nowrap">
-                      <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background: var(--color-lightgreen);"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/v1740000000/common/f1/2025/mercedes/2025mercedeslogowhite.webp" alt="Mercedes" class="avatar-img small w-full h-full"></span>
-                      <div class="font-semibold">Mercedes</div>
+                      <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background:#2F6DF0;"><img src="https://media.formula1.com/image/upload/c_fill,w_64/q_auto/v1740000000/common/f1/2025/williams/2025williamslogowhite.webp" alt="Williams" class="avatar-img small w-full h-full"></span>
+                      <div class="font-semibold">Williams</div>
                     </div>
                   </td>
-                  <td class="py-3 text-right font-bold">298</td>
+                  <td class="py-3 text-right font-bold">70</td>
                 </tr>
 
-                <!-- More teams as needed -->
-              </tbody>
-            </table>
+                <!-- Team 6 -->
+                <tr class="hover-subtle">
+                  <td class="py-3 font-bold text-center">6</td>
+                  <td class="py-3">
+                    <div class="flex items-center gap-3 nowrap">
+                      <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background:#2FA37C;"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/v1740000000/common/f1/2025/astonmartin/2025astonmartinlogowhite.webp" alt="Aston Martin" class="avatar-img small w-full h-full"></span>
+                      <div class="font-semibold">Aston Martin</div>
+                    </div>
+                  </td>
+                  <td class="py-3 text-right font-bold">52</td>
+                </tr>
+
+                <!-- Team 7 -->
+                <tr class="hover-subtle">
+                  <td class="py-3 font-bold text-center">7</td>
+                  <td class="py-3">
+                    <div class="flex items-center gap-3 nowrap">
+                      <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background:#8CF035;"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/v1740000000/common/f1/2025/kicksauber/2025kicksauberlogowhite.webp" alt="Kick Sauber" class="avatar-img small w-full h-full"></span>
+                      <div class="font-semibold">Kick Sauber</div>
+                    </div>
+                  </td>
+                  <td class="py-3 text-right font-bold">51</td>
+                </tr>
+
+                <!-- Team 8 -->
+                <tr class="hover-subtle">
+                  <td class="py-3 font-bold text-center">8</td>
+                  <td class="py-3">
+                    <div class="flex items-center gap-3 nowrap">
+                      <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background:#6D88FF;"><img src="https://media.formula1.com/image/upload/c_lfill,w_64/q_auto/v1740000000/common/f1/2025/racingbulls/2025racingbullslogowhite.webp" alt="Racing Bulls" class="avatar-img small w-full h-full"></span>
+                      <div class="font-semibold">Racing Bulls</div>
+                    </div>
+                  </td>
+                  <td class="py-3 text-right font-bold">45</td>
+                </tr>
+
+                <!-- Team 9 -->
+                <tr class="hover-subtle">
+                  <td class="py-3 font-bold text-center">9</td>
+                  <td class="py-3">
+                    <div class="flex items-center gap-3 nowrap">
+                      <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background:#9B9B9B;"><img src="https://media.formula1.com/image/upload/c_fill,w_64/q_auto/v1740000000/common/f1/2025/haas/2025haaslogowhite.webp" alt="Haas" class="avatar-img small w-full h-full"></span>
+                      <div class="font-semibold">Haas</div>
+                    </div>
+                  </td>
+                  <td class="py-3 text-right font-bold">35</td>
+                </tr>
+
+                <!-- Team 10 -->
+                <tr class="hover-subtle">
+                  <td class="py-3 font-bold text-center">10</td>
+                  <td class="py-3">
+                    <div class="flex items-center gap-3 nowrap">
+                      <span class="w-11 h-11 rounded-full overflow-hidden flex-none" style="background:var(--color-lightblue);"><img src="https://media.formula1.com/image/upload/c_fill,w_64/q_auto/v1740000000/common/f1/2025/alpine/2025alpinelogowhite.webp" alt="Alpine" class="avatar-img small w-full h-full"></span>
+                      <div class="font-semibold">Alpine</div>
+                    </div>
+                  </td>
+                  <td class="py-3 text-right font-bold">20</td>
+                </tr>
+
+
+                  <!-- rest of teams from part2 preserved -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div> <!-- /.tab content wrapper -->
+      </div> <!-- /.panel -->
+    </div> <!-- /.container -->
+
+    <!-- ===== PARTNERS SECTION ===== -->
+    <section class="partners">
+      <div style="max-width: var(--max-width); margin: 0 auto; padding-left: 2rem; padding-right: 2rem;">
+        <div class="heading">
+          <h2>OUR PARTNERS</h2>
+          <a class="view-all" href="#" aria-label="View all partners">View all</a>
+        </div>
+
+        <div class="partners-grid">
+          <a class="partner-item" href="https://www.lvmh.com/" target="_blank" rel="noopener noreferrer" title="LVMH">
+            <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/fom-website/2020/sponsors/lvmh.webp" alt="LVMH logo">
+          </a>
+
+          <a class="partner-item" href="https://www.pirelli.com/" target="_blank" rel="noopener noreferrer" title="Pirelli">
+            <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/content/dam/fom-website/2020/sponsors/pirelli.webp" alt="Pirelli logo">
+          </a>
+
+          <a class="partner-item" href="https://www.aramco.com/" target="_blank" rel="noopener noreferrer" title="Aramco">
+            <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/content/dam/fom-website/2020/sponsors/aramco.webp" alt="Aramco logo">
+          </a>
+
+          <a class="partner-item" href="https://www.heineken.com/" target="_blank" rel="noopener noreferrer" title="Heineken">
+            <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/common/f1/logo/heineken/logoheinekenoutlinedlight.webp" alt="Heineken logo">
+          </a>
+
+          <a class="partner-item" href="https://aws.amazon.com/" target="_blank" rel="noopener noreferrer" title="AWS">
+            <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/content/dam/fom-website/2020/sponsors/AWS%20GLOBAL.webp" alt="AWS logo">
+          </a>
+
+          <a class="partner-item" href="https://www.lenovo.com/" target="_blank" rel="noopener noreferrer" title="Lenovo">
+            <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/fom-website/2020/sponsors/lenovo.webp" alt="Lenovo logo">
+          </a>
+
+          <a class="partner-item" href="https://www.dhl.com/" target="_blank" rel="noopener noreferrer" title="DHL">
+            <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/content/dam/fom-website/2020/sponsors/dhl.webp" alt="DHL logo">
+          </a>
+
+          <a class="partner-item" href="https://www.qatarairways.com/" target="_blank" rel="noopener noreferrer" title="Qatar Airways">
+            <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/content/dam/fom-website/2020/sponsors/qatar.webp" alt="Qatar Airways logo">
+          </a>
+
+          <a class="partner-item" href="https://www.msccruises.com/" target="_blank" rel="noopener noreferrer" title="MSC">
+            <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/content/dam/fom-website/2020/sponsors/msc.webp" alt="MSC logo">
+          </a>
+
+          <a class="partner-item" href="https://crypto.com/" target="_blank" rel="noopener noreferrer" title="Crypto.com">
+            <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/content/dam/fom-website/2020/sponsors/crypto.com.webp" alt="Crypto.com logo">
+          </a>
+
+          <a class="partner-item" href="https://www.salesforce.com/" target="_blank" rel="noopener noreferrer" title="Salesforce">
+            <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/content/dam/fom-website/2020/sponsors/salesforce.webp" alt="Salesforce logo">
+          </a>
+
+          <a class="partner-item" href="https://www.louisvuitton.com/" target="_blank" rel="noopener noreferrer" title="Louis Vuitton">
+            <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/fom-website/2020/sponsors/louis%20vuitton.webp" alt="Louis Vuitton logo">
+          </a>
+        </div>
+
+        <div class="bottom-row">
+          <div class="partners-grid">
+            <a class="partner-item" href="https://www.tagheuer.com/" target="_blank" rel="noopener noreferrer" title="TAG Heuer">
+              <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/fom-website/2020/sponsors/TAGH_Shield_Monochrome_White-pw1.webp" alt="TAG Heuer logo">
+            </a>
+
+            <a class="partner-item" href="https://www.mhd-shares.com/" target="_blank" rel="noopener noreferrer" title="Moët Hennessy">
+              <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/fom-website/2020/sponsors/moet%20hennessy.webp" alt="Moet Hennessy logo">
+            </a>
+
+            <a class="partner-item" href="https://www.americanexpress.com/" target="_blank" rel="noopener noreferrer" title="American Express">
+              <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/fom-website/2020/sponsors/Amex.webp" alt="American Express logo">
+            </a>
+
+            <a class="partner-item" href="https://www.santander.com/" target="_blank" rel="noopener noreferrer" title="Santander">
+              <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/fom-website/2020/sponsors/santander.webp" alt="Santander logo">
+            </a>
+
+            <a class="partner-item" href="https://www.allwyn.com/" target="_blank" rel="noopener noreferrer" title="Allwyn">
+              <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/fom-website/2020/sponsors/allwyn.webp" alt="Allwyn logo">
+            </a>
+
+            <a class="partner-item" href="https://www.globant.com/" target="_blank" rel="noopener noreferrer" title="Globant">
+              <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/fom-website/2020/sponsors/globant.webp" alt="Globant logo">
+            </a>
+
+            <a class="partner-item" href="https://www.lasvegas.com/" target="_blank" rel="noopener noreferrer" title="Las Vegas">
+              <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/fom-website/2020/sponsors/las%20vegas.webp" alt="Las Vegas logo">
+            </a>
+
+            <a class="partner-item" href="https://www.paramount.com/" target="_blank" rel="noopener noreferrer" title="Paramount">
+              <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/fom-website/2020/sponsors/Paramount+.webp" alt="Paramount logo">
+            </a>
+
+            <a class="partner-item" href="https://www.barilla.com/" target="_blank" rel="noopener noreferrer" title="Barilla">
+              <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/fom-website/2020/sponsors/barilla.webp" alt="Barilla logo">
+            </a>
+
+            <a class="partner-item" href="https://www.liqui-moly.com/" target="_blank" rel="noopener noreferrer" title="Liqui Moly">
+              <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/content/dam/fom-website/2020/sponsors/liqui-moly.webp" alt="Liqui Moly logo">
+            </a>
+
+            <a class="partner-item" href="https://www.liqui-moly.com/" target="_blank" rel="noopener noreferrer" title="Nestle">
+              <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/fom-website/2020/sponsors/nestle.webp" alt="Nestle logo">
+            </a>
+
+            <a class="partner-item" href="https://www.liqui-moly.com/" target="_blank" rel="noopener noreferrer" title="pwc">
+              <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/fom-website/2020/sponsors/pwc.webp" alt="pwc logo">
+            </a>
+            
+            <a class="partner-item" href="https://www.liqui-moly.com/" target="_blank" rel="noopener noreferrer" title="pepsico">
+              <img src="https://media.formula1.com/image/upload/e_trim/c_fit,w_160,h_90/q_auto/v1740000000/fom-website/2020/sponsors/pepsico.webp" alt="pepsico logo">
+            </a>
+            
           </div>
         </div>
 
-      </div> <!-- /.tab content wrapper -->
-    </div> <!-- /.panel -->
+      </div>
+    </section>
+    <!-- ===== END PARTNERS ===== -->
 
-  </div> <!-- /.container -->
+  </div> <!-- /.page-wrap -->
 
+  <!-- Tab switching logic + update title (from part2) -->
   <script>
-    // Tab switching logic (keeps semantics close to your original usage)
     const tabButtons = document.querySelectorAll('.tab-btn');
     const panels = document.querySelectorAll('.tab-panel');
+    const pageTitle = document.getElementById('page-title');
+
+    function updateTitleForTab(targetId){
+      if (targetId === 'races') {
+        pageTitle.textContent = '2025 RACE RESULT';
+      } else if (targetId === 'drivers') {
+        pageTitle.textContent = '2025 DRIVERS STANDINGS';
+      } else if (targetId === 'teams') {
+        pageTitle.textContent = '2025 TEAMS STANDINGS';
+      }
+    }
 
     function activateTab(targetId){
       panels.forEach(p => {
@@ -749,6 +1576,8 @@
           btn.classList.add('text-white/90');
         }
       });
+
+      updateTitleForTab(targetId);
     }
 
     // init - activate 'races' by default
