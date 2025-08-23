@@ -1,5 +1,4 @@
-
-Formula 1
+**Formula 1**
 
 This repository is dedicated to Formula 1, the pinnacle of motorsport. Explore race highlights, driver stats, team standings, and upcoming Grand Prix events. F1 delivers speed, strategy, and excitement, and this project brings all that action together in one place for fans around the world.  
 
