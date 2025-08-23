@@ -15,7 +15,7 @@ This repository is dedicated to Formula 1, the pinnacle of motorsport. Explore r
 5. To run npm: npm run build
 
 ## Contributors
-Aashish Shrestha("https://aashish-sth.github.io/NA-F1/")
+Aashish Shrestha("https://github.com/Aashish-Sth")
 Dilip Shrestha("https://github.com/dilipstha34")
 Sudhaanshu ("https://github.com/Sudhaanshuthapa")
 Upakar Shrestha("https://github.com/Upakar-Shrestha")
