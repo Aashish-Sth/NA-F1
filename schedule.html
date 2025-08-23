@@ -1,13 +1,13 @@
-  <!DOCTYPE html>
-  <html>
-    <head>
-      <title>F1 Navbar</title>
-      <link rel="stylesheet" href="main.css" />
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>F1 Navbar</title>
+    <link rel="stylesheet" href="main.css" />
 
-      <link href="./output.css" rel="stylesheet" />
-    </head>
-    <body>
-     <nav
+    <link href="./output.css" rel="stylesheet" />
+  </head>
+  <body class="bg-gray-900 text-white">
+    <nav
       class="bg-gray-900 z-50 absolute w-full top-0"
       x-data="{ isOpen: false }"
     >
@@ -129,455 +129,761 @@
         </div>
       </div>
     </nav>
-      <main class="mt-[100px]">
-      <div class="text-center text-3xl f1-b my-9 lg:my-11">2025 FIA FORMULA ONE WORLD 
-  CHAMPIONSHIP™ RACE CALENDAR</div>
+    <main class="mt-[100px]">
+      <div class="text-center text-3xl f1-b my-9 lg:my-11">
+        2025 FIA FORMULA ONE WORLD CHAMPIONSHIP™ RACE CALENDAR
+      </div>
 
-  <div id="animation-carousel" class="relative w-full" data-carousel="static">
-      <!-- Carousel wrapper -->
-      <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-          
+      <div
+        id="animation-carousel"
+        class="relative w-full"
+        data-carousel="static"
+      >
+        <!-- Carousel wrapper -->
+        <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
           <!-- Item 1 -->
-          <div class="duration-700 ease-in-out" data-carousel-item="active" >
-              <img src="assets/schedule/f1-netherlands.jpg" class="absolute block w-full h-full object-cover top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" alt="F1 Netherlands">
-              <div class="absolute bottom-10 left-1/2 -translate-x-1/2 text-center text-white bg-black/50 px-4 py-2 rounded-lg">
-                  <h2 class="text-xl f1-b font-bold">Dutch Grand Prix</h2>
-                  <p class="text-sm f1">Thrilling race at Zandvoort Circuit</p>
-              </div>
+          <div class="duration-700 ease-in-out" data-carousel-item="active">
+            <img
+              src="assets/schedule/f1-netherlands.jpg"
+              class="absolute block w-full h-full object-cover top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+              alt="F1 Netherlands"
+            />
+            <div
+              class="absolute bottom-10 left-1/2 -translate-x-1/2 text-center text-white bg-black/50 px-4 py-2 rounded-lg"
+            >
+              <h2 class="text-xl f1-b font-bold">Dutch Grand Prix</h2>
+              <p class="text-sm f1">Thrilling race at Zandvoort Circuit</p>
+            </div>
           </div>
 
           <!-- Item 2 -->
           <div class="hidden duration-700 ease-in-out" data-carousel-item>
-              <img src="assets/schedule/f1-italy.jpg" class="absolute block w-full h-full object-cover top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" alt="F1 Italy">
-              <div class="absolute bottom-10 left-1/2 -translate-x-1/2 text-center text-white bg-black/50 px-4 py-2 rounded-lg">
-                  <h2 class="text-xl f1-b font-bold">Italian Grand Prix</h2>
-                  <p class="text-sm">Speed and history at Monza</p>
-              </div>
+            <img
+              src="assets/schedule/f1-italy.jpg"
+              class="absolute block w-full h-full object-cover top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+              alt="F1 Italy"
+            />
+            <div
+              class="absolute bottom-10 left-1/2 -translate-x-1/2 text-center text-white bg-black/50 px-4 py-2 rounded-lg"
+            >
+              <h2 class="text-xl f1-b font-bold">Italian Grand Prix</h2>
+              <p class="text-sm">Speed and history at Monza</p>
+            </div>
           </div>
 
           <!-- Item 3 -->
           <div class="hidden duration-700 ease-in-out" data-carousel-item>
-              <img src="assets/schedule/f1-australia.jpg" class="absolute block w-full h-full object-cover top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" alt="F1 Australia">
-              <div class="absolute bottom-10 left-1/2 -translate-x-1/2 text-center text-white bg-black/50 px-4 py-2 rounded-lg">
-                  <h2 class="text-xl f1-b font-bold">Australian Grand Prix</h2>
-                  <p class="text-sm">Excitement at Melbourne’s Albert Park</p>
-              </div>
+            <img
+              src="assets/schedule/f1-australia.jpg"
+              class="absolute block w-full h-full object-cover top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+              alt="F1 Australia"
+            />
+            <div
+              class="absolute bottom-10 left-1/2 -translate-x-1/2 text-center text-white bg-black/50 px-4 py-2 rounded-lg"
+            >
+              <h2 class="text-xl f1-b font-bold">Australian Grand Prix</h2>
+              <p class="text-sm">Excitement at Melbourne’s Albert Park</p>
+            </div>
           </div>
-      </div>
-
-      <!-- Slider controls -->
-      <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-          <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white">
-              <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-              </svg>
-              <span class="sr-only">Previous</span>
-          </span>
-      </button>
-      <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-          <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white">
-              <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-              </svg>
-              <span class="sr-only">Next</span>
-          </span>
-      </button>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
-    <!-- Card 1 -->
-    <div class="bg-orange-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold f1-b mb-2">Round 1</h2>
-        <p class="text-sm">
-          The Australian Grand Prix at Melbourne’s Albert Park Circuit is a key Formula 1 race known for its fast straights, sharp corners, and unpredictable results. Traditionally the season opener, it attracts huge crowds and creates a vibrant motorsport atmosphere.
-        </p>
-      </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/melbourne-circuit.png" alt="Melbourne Circuit" class="w-32 md:w-40 rounded-lg" />
-      </div>
-    </div>
-
-    <!-- Card 2 -->
-    <div class="bg-orange-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold  f1-b mb-2">Round 2</h2>
-        <p class="text-sm">
-          Round 2, the Chinese Grand Prix at the Shanghai International Circuit, is known for its long back straight and challenging mix of high-speed and technical corners. The track often delivers dramatic overtakes and unpredictable race strategies.
-        </p>
-      </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/shanghai-circuit.png" alt="shanghai-circuit Circuit" class="w-32 md:w-40 rounded-lg" />
-      </div>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
-    <!-- Card 3 -->
-    <div class="bg-red-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold f1-b mb-2">Round 3</h2>
-        <p class="text-sm">
-          The Japanese Grand Prix at Suzuka Circuit is a legendary race defined by its unique figure-eight layout and sweeping high-speed turns. Passionate fans and iconic corners like 130R make it one of the sport’s most revered events.
-      </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/sizuka-circuit.jpg" alt="Japan Circuit" class="w-32 md:w-40 rounded-lg" />
-      </div>
-    </div>
-
-    <!-- Card 4 -->
-    <div class="bg-red-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold  f1-b mb-2">Round 4</h2>
-        <p class="text-sm">
-  The Bahrain Grand Prix at the Bahrain International Circuit is a night race famous for its long straights, heavy braking zones, and desert backdrop. Close racing and strategic battles often produce spectacular results.      </p>
-      </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/bahrain-circuit.jpg" alt="Bahrain Circuit" class="w-32 md:w-40 rounded-lg" />
-      </div>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
-    <!-- Card 5 -->
-    <div class="bg-blue-900 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold f1-b mb-2">Round 5</h2>
-        <p class="text-sm">
-          The Saudi Arabian Grand Prix at Jeddah Corniche Circuit is a high-speed night race known for its narrow street layout, flowing corners, and dramatic racing under the lights. Its fast pace and unforgiving walls deliver constant tension and thrilling battles.
-      </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/saudi-circuit.png" alt="Saudi Circuit" class="w-32 md:w-40 rounded-lg" />
-      </div>
-    </div>
-
-    <!-- Card 6 -->
-    <div class="bg-blue-900 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold  f1-b mb-2">Round 6</h2>
-        <p class="text-sm">
-  The Miami Grand Prix at the Miami International Autodrome is set around Hard Rock Stadium and blends fast straights with tight technical sections. Its vibrant setting and unpredictable layout make it a modern fan favorite.    </p>
-      </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/Miami-circuit.png" alt="Miami Circuit" class="w-[228px] md:w-[218px] rounded-lg" />
-      </div>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
-    <!-- Card 7 -->
-    <div class="bg-teal-700 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold f1-b mb-2">Round 7</h2>
-        <p class="text-sm">
-          The Emilia Romagna Grand Prix at Imola is a historic race on a challenging circuit with narrow sections and old-school corners. Its technical nature and rich history ensure exciting races steeped in tradition.
-      </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/imola-circuit.png" alt="Imola Circuit" class="w-[228px] md:w-[220px] rounded-lg" />
-      </div>
-    </div>
-
-    <!-- Card 8 -->
-    <div class="bg-teal-700 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold  f1-b mb-2">Round 8</h2>
-        <p class="text-sm">
-  The Monaco Grand Prix at Circuit de Monaco is the crown jewel of Formula 1, winding through the glamorous streets of Monte Carlo. Its tight corners, barriers, and historic prestige make it a unique and iconic challenge. </p>
-      </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/monaco-circuit.jpg" alt="Monaco Circuit" class="w-[228px] md:w-[218px] rounded-lg" />
-      </div>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
-    <!-- Card 9 -->
-    <div class="bg-orange-700 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold f1-b mb-2">Round 9</h2>
-        <p class="text-sm">
-  The Canadian Grand Prix at Circuit Gilles Villeneuve is famed for its long straights, chicanes, and the notorious “Wall of Champions.” Unpredictable weather and passionate fans add to its electric atmosphere.    </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/candian-circuit.jpg" alt="Canadian Circuit" class="w-[228px] md:w-[220px] rounded-lg" />
-      </div>
-    </div>
-
-    <!-- Card 10 -->
-    <div class="bg-orange-700 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold  f1-b mb-2">Round 10</h2>
-        <p class="text-sm">
-  The Spanish Grand Prix at Circuit de Barcelona-Catalunya is a well-balanced track with fast corners and technical sections. Known as a key testing venue, it often provides strategic battles and close competition. </p>
-      </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/span-circuit.jpg" alt="spanish Circuit" class="w-[228px] md:w-[218px] rounded-lg" />
-      </div>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
-    <!-- Card 11 -->
-    <div class="bg-green-700 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold f1-b mb-2">Round 11</h2>
-        <p class="text-sm">
-  The Austrian Grand Prix at the Red Bull Ring is set in the Styrian mountains and features fast straights, heavy braking zones, and elevation changes. Its short lap length produces close, action-packed racing. </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/austrian-circuit.jpg" alt="Austrian Circuit" class="w-[228px] md:w-[220px] rounded-lg" />
-      </div>
-    </div>
-
-    <!-- Card 12 -->
-    <div class="bg-green-700 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold  f1-b mb-2">Round 12</h2>
-        <p class="text-sm">
-  The British Grand Prix at Silverstone Circuit is a cornerstone of Formula 1, with iconic high-speed corners like Maggotts and Becketts. Enthusiastic fans and rich history make it one of the sport’s greatest stages. </p>
-      </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/britian-circuit.jpg" alt="British Circuit" class="w-[228px] md:w-[218px] rounded-lg" />
-      </div>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
-    <!-- Card 13 -->
-    <div class="bg-red-300 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold f1-b mb-2">Round 13</h2>
-        <p class="text-sm">
-  The Belgian Grand Prix at Circuit de Spa-Francorchamps is one of the most iconic races, known for Eau Rouge, long straights, and unpredictable weather. Its mix of speed and technicality defines pure racing. </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/belgium-circuit.png" alt="Belgian Circuit" class="w-[228px] md:w-[220px] rounded-lg" />
-      </div>
-    </div>
-
-    <!-- Card 14 -->
-    <div class="bg-red-300 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold  f1-b mb-2">Round 14</h2>
-        <p class="text-sm">
-  The Hungarian Grand Prix at the Hungaroring is a tight, twisty circuit often compared to a karting track. Its limited overtaking spots create strategic battles and demand driver precision. </p>
-      </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/hungary-circuit.png" alt="Hungarian Circuit" class="w-[228px] md:w-[218px] rounded-lg" />
-      </div>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
-    <!-- Card 15 -->
-    <div class="bg-blue-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold f1-b mb-2">Round 15</h2>
-        <p class="text-sm">
-  The Dutch Grand Prix at Circuit Zandvoort is a high-speed, old-school track with steep banking and flowing corners. Orange-clad fans create an electric atmosphere by the seaside. </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/dutch-circuit.png" alt="Dutch Circuit" class="w-[228px] md:w-[220px] rounded-lg" />
-      </div>
-    </div>
-
-    <!-- Card 16 -->
-    <div class="bg-blue-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold  f1-b mb-2">Round 16</h2>
-        <p class="text-sm">
-  The Italian Grand Prix at Monza is the “Temple of Speed,” featuring long straights and heavy braking zones. Its passionate tifosi and historic prestige make it one of Formula 1’s most iconic venues. </p>
-      </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/italian-circuit.png" alt="Italian Circuit" class="w-[228px] md:w-[218px] rounded-lg" />
-      </div>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
-    <!-- Card 17 -->
-    <div class="bg-purple-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold f1-b mb-2">Round 17</h2>
-        <p class="text-sm">
-  The Azerbaijan Grand Prix at Baku City Circuit combines tight street sections with one of the longest straights in Formula 1. Its unpredictable races often deliver drama and surprise winners. </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/azerbaijan-circuit.png" alt="Azerbaijan Circuit" class="w-[228px] md:w-[220px] rounded-lg" />
-      </div>
-    </div>
-
-    <!-- Card 18 -->
-    <div class="bg-purple-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold  f1-b mb-2">Round 18</h2>
-        <p class="text-sm">
-  The Singapore Grand Prix at Marina Bay Street Circuit is Formula 1’s original night race, known for its humidity, tight corners, and physical demands. The city skyline backdrop adds to its unique spectacle. </p>
-      </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/singapore-circuit.png" alt="Singapore Circuit" class="w-[228px] md:w-[218px] rounded-lg" />
-      </div>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
-    <!-- Card 19 -->
-    <div class="bg-yellow-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold f1-b mb-2">Round 19</h2>
-        <p class="text-sm">
-  The United States Grand Prix at Circuit of the Americas in Austin blends fast straights with sweeping corners inspired by legendary circuits. Its festive atmosphere makes it a modern classic. </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/usa-circuit.png" alt="Usa Circuit" class="w-[228px] md:w-[220px] rounded-lg" />
-      </div>
-    </div>
-
-    <!-- Card 20 -->
-    <div class="bg-yellow-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold  f1-b mb-2">Round 20</h2>
-        <p class="text-sm">
-  The Mexican Grand Prix at Autódromo Hermanos Rodríguez is famous for its high altitude and passionate fans. The stadium section creates a thrilling atmosphere as cars roar past thousands of spectators. </p>
-      </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/mexican-circuit.png" alt="Mexican Circuit" class="w-[228px] md:w-[218px] rounded-lg" />
-      </div>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
-    <!-- Card 21 -->
-    <div class="bg-indigo-500 p-6 rounded-xl flex flex-col md:flex  -row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold f1-b mb-2">Round 21</h2>
-        <p class="text-sm">
-  The Brazilian Grand Prix at Interlagos is a short, undulating track that often produces thrilling battles and unpredictable weather. Its history and passionate fans make it a beloved venue. </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/brazil-circuit.png" alt="Brazilian Circuit" class="w-[228px] md:w-[220px] rounded-lg" />
-      </div>
-    </div>
-
-    <!-- Card 22 -->
-    <div class="bg-indigo-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold  f1-b mb-2">Round 22</h2>
-        <p class="text-sm">
-  The Las Vegas Grand Prix at the Las Vegas Strip Circuit is a glamorous night race along the city’s iconic landmarks. Its long straights and lively atmosphere bring a unique entertainment spectacle. </p>
-      </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/las-circuit.JPG" alt="Las Circuit" class="w-[228px] md:w-[218px] rounded-lg" />
-      </div>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
-    <!-- Card 23 -->
-    <div class="bg-rose-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold f1-b mb-2">Round 23</h2>
-        <p class="text-sm">
-  The Qatar Grand Prix at Lusail International Circuit is a floodlit race with sweeping corners and smooth asphalt. It demands precision and consistency, offering unique night-race challenges. </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/qatar-circuit.jpg" alt="Qatar Circuit" class="w-[228px] md:w-[220px] rounded-lg" />
-      </div>
-    </div>
-
-    <!-- Card 24 -->
-    <div class="bg-rose-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start">
-      <!-- Left text -->
-      <div class="flex-1 text-white md:pr-6">
-        <h2 class="text-2xl font-bold  f1-b mb-2">Round 24</h2>
-        <p class="text-sm">
-  The Abu Dhabi Grand Prix at Yas Marina Circuit closes the season with a twilight setting and modern layout. Its mix of technical sections and long straights makes it a dramatic championship finale. </p>
-      </div>
-      <!-- Right image -->
-      <div class="mt-4 md:mt-0">
-        <img src="assets/schedule/abudhabi-circuit.png" alt="Abu Circuit" class="w-[228px] md:w-[218px] rounded-lg" />
-      </div>
-    </div>
-  </div>
-
-<footer class="bg-gray-900 mt-8 px-6 py-8">
-      <div class="flex flex-wrap justify-center gap-6 text-gray-300 mb-6">
-        <a href="#" class="f1-b hover:text-white">Schedule</a>
-        <a href="#" class="f1-b hover:text-white">Driver & Teams</a>
-        <a href="#" class="f1-b hover:text-white">About Us</a>
-        <a href="#" class="f1-b hover:text-white">Leader Board</a>
-      </div>
-
-      <div class="flex items-center justify-center mb-6">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg"
-          alt="F1 Logo"
-          class="mr-4"
-        />
-        <div
-          class="flex-1 h-1 bg-gradient-to-r from-gray-500 to-gray-300"
-        ></div>
-      </div>
-
-      <div
-        class="flex flex-col md:flex-row items-center justify-between gap-4 text-gray-400 text-sm"
-      >
-        <div class="flex gap-4">
-          <a href="#"><i class="fab fa-facebook"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-youtube"></i></a>
         </div>
 
-        <p>© 2025 Formula One World Championship</p>
+        <!-- Slider controls -->
+        <button
+          type="button"
+          class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+          data-carousel-prev
+        >
+          <span
+            class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white"
+          >
+            <svg
+              class="w-4 h-4 text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 6 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 1 1 5l4 4"
+              />
+            </svg>
+            <span class="sr-only">Previous</span>
+          </span>
+        </button>
+        <button
+          type="button"
+          class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+          data-carousel-next
+        >
+          <span
+            class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white"
+          >
+            <svg
+              class="w-4 h-4 text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 6 10"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m1 9 4-4-4-4"
+              />
+            </svg>
+            <span class="sr-only">Next</span>
+          </span>
+        </button>
       </div>
-    </footer>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
+        <!-- Card 1 -->
+        <div
+          class="bg-orange-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 1</h2>
+            <p class="text-sm">
+              The Australian Grand Prix at Melbourne’s Albert Park Circuit is a
+              key Formula 1 race known for its fast straights, sharp corners,
+              and unpredictable results. Traditionally the season opener, it
+              attracts huge crowds and creates a vibrant motorsport atmosphere.
+            </p>
+          </div>
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/melbourne-circuit.png"
+              alt="Melbourne Circuit"
+              class="w-32 md:w-40 rounded-lg"
+            />
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div
+          class="bg-orange-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 2</h2>
+            <p class="text-sm">
+              Round 2, the Chinese Grand Prix at the Shanghai International
+              Circuit, is known for its long back straight and challenging mix
+              of high-speed and technical corners. The track often delivers
+              dramatic overtakes and unpredictable race strategies.
+            </p>
+          </div>
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/shanghai-circuit.png"
+              alt="shanghai-circuit Circuit"
+              class="w-32 md:w-40 rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
+        <!-- Card 3 -->
+        <div
+          class="bg-red-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 3</h2>
+            <p class="text-sm">
+              The Japanese Grand Prix at Suzuka Circuit is a legendary race
+              defined by its unique figure-eight layout and sweeping high-speed
+              turns. Passionate fans and iconic corners like 130R make it one of
+              the sport’s most revered events.
+            </p>
+          </div>
+
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/sizuka-circuit.jpg"
+              alt="Japan Circuit"
+              class="w-32 md:w-40 rounded-lg"
+            />
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div
+          class="bg-red-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 4</h2>
+            <p class="text-sm">
+              The Bahrain Grand Prix at the Bahrain International Circuit is a
+              night race famous for its long straights, heavy braking zones, and
+              desert backdrop. Close racing and strategic battles often produce
+              spectacular results.
+            </p>
+          </div>
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/bahrain-circuit.jpg"
+              alt="Bahrain Circuit"
+              class="w-32 md:w-40 rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
+        <!-- Card 5 -->
+        <div
+          class="bg-blue-900 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 5</h2>
+            <p class="text-sm">
+              The Saudi Arabian Grand Prix at Jeddah Corniche Circuit is a
+              high-speed night race known for its narrow street layout, flowing
+              corners, and dramatic racing under the lights. Its fast pace and
+              unforgiving walls deliver constant tension and thrilling battles.
+            </p>
+          </div>
+
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/saudi-circuit.png"
+              alt="Saudi Circuit"
+              class="w-32 md:w-40 rounded-lg"
+            />
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div
+          class="bg-blue-900 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 6</h2>
+            <p class="text-sm">
+              The Miami Grand Prix at the Miami International Autodrome is set
+              around Hard Rock Stadium and blends fast straights with tight
+              technical sections. Its vibrant setting and unpredictable layout
+              make it a modern fan favorite.
+            </p>
+          </div>
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/Miami-circuit.png"
+              alt="Miami Circuit"
+              class="w-[228px] md:w-[218px] rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
+        <!-- Card 7 -->
+        <div
+          class="bg-teal-700 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 7</h2>
+            <p class="text-sm">
+              The Emilia Romagna Grand Prix at Imola is a historic race on a
+              challenging circuit with narrow sections and old-school corners.
+              Its technical nature and rich history ensure exciting races
+              steeped in tradition.
+            </p>
+          </div>
+
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/imola-circuit.png"
+              alt="Imola Circuit"
+              class="w-[228px] md:w-[220px] rounded-lg"
+            />
+          </div>
+        </div>
+
+        <!-- Card 8 -->
+        <div
+          class="bg-teal-700 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 8</h2>
+            <p class="text-sm">
+              The Monaco Grand Prix at Circuit de Monaco is the crown jewel of
+              Formula 1, winding through the glamorous streets of Monte Carlo.
+              Its tight corners, barriers, and historic prestige make it a
+              unique and iconic challenge.
+            </p>
+          </div>
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/monaco-circuit.jpg"
+              alt="Monaco Circuit"
+              class="w-[228px] md:w-[218px] rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
+        <!-- Card 9 -->
+        <div
+          class="bg-orange-700 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 9</h2>
+            <p class="text-sm">
+              The Canadian Grand Prix at Circuit Gilles Villeneuve is famed for
+              its long straights, chicanes, and the notorious “Wall of
+              Champions.” Unpredictable weather and passionate fans add to its
+              electric atmosphere.
+            </p>
+          </div>
+
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/candian-circuit.jpg"
+              alt="Canadian Circuit"
+              class="w-[228px] md:w-[220px] rounded-lg"
+            />
+          </div>
+        </div>
+
+        <!-- Card 10 -->
+        <div
+          class="bg-orange-700 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 10</h2>
+            <p class="text-sm">
+              The Spanish Grand Prix at Circuit de Barcelona-Catalunya is a
+              well-balanced track with fast corners and technical sections.
+              Known as a key testing venue, it often provides strategic battles
+              and close competition.
+            </p>
+          </div>
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/span-circuit.jpg"
+              alt="spanish Circuit"
+              class="w-[228px] md:w-[218px] rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
+        <!-- Card 11 -->
+        <div
+          class="bg-green-700 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 11</h2>
+            <p class="text-sm">
+              The Austrian Grand Prix at the Red Bull Ring is set in the Styrian
+              mountains and features fast straights, heavy braking zones, and
+              elevation changes. Its short lap length produces close,
+              action-packed racing.
+            </p>
+          </div>
+
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/austrian-circuit.jpg"
+              alt="Austrian Circuit"
+              class="w-[228px] md:w-[220px] rounded-lg"
+            />
+          </div>
+        </div>
+
+        <!-- Card 12 -->
+        <div
+          class="bg-green-700 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 12</h2>
+            <p class="text-sm">
+              The British Grand Prix at Silverstone Circuit is a cornerstone of
+              Formula 1, with iconic high-speed corners like Maggotts and
+              Becketts. Enthusiastic fans and rich history make it one of the
+              sport’s greatest stages.
+            </p>
+          </div>
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/britian-circuit.jpg"
+              alt="British Circuit"
+              class="w-[228px] md:w-[218px] rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
+        <!-- Card 13 -->
+        <div
+          class="bg-red-300 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 13</h2>
+            <p class="text-sm">
+              The Belgian Grand Prix at Circuit de Spa-Francorchamps is one of
+              the most iconic races, known for Eau Rouge, long straights, and
+              unpredictable weather. Its mix of speed and technicality defines
+              pure racing.
+            </p>
+          </div>
+
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/belgium-circuit.png"
+              alt="Belgian Circuit"
+              class="w-[228px] md:w-[220px] rounded-lg"
+            />
+          </div>
+        </div>
+
+        <!-- Card 14 -->
+        <div
+          class="bg-red-300 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 14</h2>
+            <p class="text-sm">
+              The Hungarian Grand Prix at the Hungaroring is a tight, twisty
+              circuit often compared to a karting track. Its limited overtaking
+              spots create strategic battles and demand driver precision.
+            </p>
+          </div>
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/hungary-circuit.png"
+              alt="Hungarian Circuit"
+              class="w-[228px] md:w-[218px] rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
+        <!-- Card 15 -->
+        <div
+          class="bg-blue-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 15</h2>
+            <p class="text-sm">
+              The Dutch Grand Prix at Circuit Zandvoort is a high-speed,
+              old-school track with steep banking and flowing corners.
+              Orange-clad fans create an electric atmosphere by the seaside.
+            </p>
+          </div>
+
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/dutch-circuit.png"
+              alt="Dutch Circuit"
+              class="w-[228px] md:w-[220px] rounded-lg"
+            />
+          </div>
+        </div>
+
+        <!-- Card 16 -->
+        <div
+          class="bg-blue-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 16</h2>
+            <p class="text-sm">
+              The Italian Grand Prix at Monza is the “Temple of Speed,”
+              featuring long straights and heavy braking zones. Its passionate
+              tifosi and historic prestige make it one of Formula 1’s most
+              iconic venues.
+            </p>
+          </div>
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/italian-circuit.png"
+              alt="Italian Circuit"
+              class="w-[228px] md:w-[218px] rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
+        <!-- Card 17 -->
+        <div
+          class="bg-purple-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 17</h2>
+            <p class="text-sm">
+              The Azerbaijan Grand Prix at Baku City Circuit combines tight
+              street sections with one of the longest straights in Formula 1.
+              Its unpredictable races often deliver drama and surprise winners.
+            </p>
+          </div>
+
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/azerbaijan-circuit.png"
+              alt="Azerbaijan Circuit"
+              class="w-[228px] md:w-[220px] rounded-lg"
+            />
+          </div>
+        </div>
+
+        <!-- Card 18 -->
+        <div
+          class="bg-purple-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 18</h2>
+            <p class="text-sm">
+              The Singapore Grand Prix at Marina Bay Street Circuit is Formula
+              1’s original night race, known for its humidity, tight corners,
+              and physical demands. The city skyline backdrop adds to its unique
+              spectacle.
+            </p>
+          </div>
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/singapore-circuit.png"
+              alt="Singapore Circuit"
+              class="w-[228px] md:w-[218px] rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
+        <!-- Card 19 -->
+        <div
+          class="bg-yellow-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 19</h2>
+            <p class="text-sm">
+              The United States Grand Prix at Circuit of the Americas in Austin
+              blends fast straights with sweeping corners inspired by legendary
+              circuits. Its festive atmosphere makes it a modern classic.
+            </p>
+          </div>
+
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/usa-circuit.png"
+              alt="Usa Circuit"
+              class="w-[228px] md:w-[220px] rounded-lg"
+            />
+          </div>
+        </div>
+
+        <!-- Card 20 -->
+        <div
+          class="bg-yellow-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 20</h2>
+            <p class="text-sm">
+              The Mexican Grand Prix at Autódromo Hermanos Rodríguez is famous
+              for its high altitude and passionate fans. The stadium section
+              creates a thrilling atmosphere as cars roar past thousands of
+              spectators.
+            </p>
+          </div>
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/mexican-circuit.png"
+              alt="Mexican Circuit"
+              class="w-[228px] md:w-[218px] rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
+        <!-- Card 21 -->
+        <div
+          class="bg-indigo-500 p-6 rounded-xl flex flex-col md:flex -row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 21</h2>
+            <p class="text-sm">
+              The Brazilian Grand Prix at Interlagos is a short, undulating
+              track that often produces thrilling battles and unpredictable
+              weather. Its history and passionate fans make it a beloved venue.
+            </p>
+          </div>
+
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/brazil-circuit.png"
+              alt="Brazilian Circuit"
+              class="w-[228px] md:w-[220px] rounded-lg"
+            />
+          </div>
+        </div>
+
+        <!-- Card 22 -->
+        <div
+          class="bg-indigo-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 22</h2>
+            <p class="text-sm">
+              The Las Vegas Grand Prix at the Las Vegas Strip Circuit is a
+              glamorous night race along the city’s iconic landmarks. Its long
+              straights and lively atmosphere bring a unique entertainment
+              spectacle.
+            </p>
+          </div>
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/las-circuit.JPG"
+              alt="Las Circuit"
+              class="w-[228px] md:w-[218px] rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-20 px-4 pt-20">
+        <!-- Card 23 -->
+        <div
+          class="bg-rose-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 23</h2>
+            <p class="text-sm">
+              The Qatar Grand Prix at Lusail International Circuit is a floodlit
+              race with sweeping corners and smooth asphalt. It demands
+              precision and consistency, offering unique night-race challenges.
+            </p>
+          </div>
+
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/qatar-circuit.jpg"
+              alt="Qatar Circuit"
+              class="w-[228px] md:w-[220px] rounded-lg"
+            />
+          </div>
+        </div>
+
+        <!-- Card 24 -->
+        <div
+          class="bg-rose-500 p-6 rounded-xl flex flex-col md:flex-row items-center md:items-start"
+        >
+          <!-- Left text -->
+          <div class="flex-1 text-white md:pr-6">
+            <h2 class="text-2xl font-bold f1-b mb-2">Round 24</h2>
+            <p class="text-sm">
+              The Abu Dhabi Grand Prix at Yas Marina Circuit closes the season
+              with a twilight setting and modern layout. Its mix of technical
+              sections and long straights makes it a dramatic championship
+              finale.
+            </p>
+          </div>
+          <!-- Right image -->
+          <div class="mt-4 md:mt-0">
+            <img
+              src="assets/schedule/abudhabi-circuit.png"
+              alt="Abu Circuit"
+              class="w-[228px] md:w-[218px] rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+
+      <footer class="bg-gray-900 mt-8 px-6 py-8">
+        <div class="flex flex-wrap justify-center gap-6 text-gray-300 mb-6">
+          <a href="#" class="f1-b hover:text-white">Schedule</a>
+          <a href="#" class="f1-b hover:text-white">Driver & Teams</a>
+          <a href="#" class="f1-b hover:text-white">About Us</a>
+          <a href="#" class="f1-b hover:text-white">Leader Board</a>
+        </div>
+
+        <div class="flex items-center justify-center mb-6">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg"
+            alt="F1 Logo"
+            class="mr-4"
+          />
+          <div
+            class="flex-1 h-1 bg-gradient-to-r from-gray-500 to-gray-300"
+          ></div>
+        </div>
+
+        <div
+          class="flex flex-col md:flex-row items-center justify-between gap-4 text-gray-400 text-sm"
+        >
+          <div class="flex gap-4">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+
+          <p>© 2025 Formula One World Championship</p>
+        </div>
+      </footer>
     </main>
-      <script
-        defer
-        src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
-      ></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-
-
-    </body>
-  </html>
-  
+  </body>
+</html>

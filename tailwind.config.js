@@ -1,12 +1,14 @@
+// tailwind.config.js
 module.exports = {
   content: [
-    "./src/**/*.{html,js}",
-    "./node_modules/flowbite/**/*.js"
+    "./*.html", // Scans your HTML files in the root
+    "./src/**/*.html", // Scans HTML files in the src folder
+    "./node_modules/flowbite/**/*.js", // <-- ADD THIS LINE
   ],
   theme: {
     extend: {},
   },
   plugins: [
-    require('flowbite/plugin')
+    require("flowbite/plugin"), // This line will now work
   ],
-}
+};
